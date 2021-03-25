@@ -61,7 +61,8 @@
 			document.querySelector('#calculate')
 				.addEventListener('click', () => {
 					const target = getTarget();
-					calculate(target)
+					const tension = parseFloat(document.querySelector('[name="tension"]').value);
+					calculate(target, {tension})
 						.then(r => {
 							const score = r.sort((a, b) => a.train_count - b.train_count).shift();
 							console.log(score);
@@ -130,6 +131,13 @@
 			</tr>
 		</thead>
 	</table>
+	<label>Tension<select name="tension">
+		<option value="1.2" selected>Perfect</option>
+		<option value="1.1">Good</option>
+		<option value="1.0">Soso</option>
+		<option value="0.9">Bad</option>
+		<option value="0.8">Dead</option>
+	</select></label>
 	<button id="calculate">Calculate</button>
 	<table id="result">
 		<caption>Result</caption>

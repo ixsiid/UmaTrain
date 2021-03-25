@@ -1,5 +1,10 @@
 
-export async function calculate({ speed, stamina, power, guts, smart }) {
+export async function calculate({
+				speed = 0, stamina = 0, power = 0, guts = 0, smart = 0
+			} = {}, {
+				tension = 1.0
+			} = {}) {
+
 	speed = Math.min(1000, Math.max(0, speed));
 	stamina = Math.min(1000, Math.max(0, stamina));
 	power = Math.min(1000, Math.max(0, power));
@@ -20,11 +25,11 @@ export async function calculate({ speed, stamina, power, guts, smart }) {
 				enumerable: true,
 				value: function (name) {
 					const index = this.train_score.title.findIndex(t => t == name);
-					const level = Math.min(4, this.train_level[index] / 4 | 0); // | 0 は整数部の抜き出し
+					const level = Math.min(4, this.train_level[index] / 4 | 0); // '| 0' は整数部の抜き出し
 					this.train_level[index] += 1;
 					this.train_count += 1;
 
-					for (let i = 0; i < 7; i++) this.status[i] += train_score[name][level][i];
+					for (let i = 0; i < 7; i++) this.status[i] += train_score[name][level][i] * tension | 0;
 				}
 			});
 
