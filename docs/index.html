@@ -1,21 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
+	<meta charset="utf-8" />
 	<title>Undefined</title>
 	<script type="module" src="train.js"></script>
 	<script type="module">
 		import { calculate } from './train.js'
 
+		var n;
 
-		window.addEventListener('load', () => {
-			calculate();
+		window.addEventListener('load', async () => {
+			calculate({ speed: 1000, stamina: 50, power: 200, guts: 0, smart: 800 })
+				.then(r => console.log(r));
+
+			const result = document.querySelector('#result tbody');
+			const createResult = (target, score) => {
+				const tr = document.createElement('tr');
+				['speed', 'stamina', 'power', 'guts', 'smart']
+					.forEach((n, i) => {
+						const td = document.createElement('td');
+						td.textContent = score.status[i] + ' / ';
+
+						const t = document.createElement('span');
+						t.classList.add('target');
+						t.textContent = target[n];
+						td.appendChild(t);
+
+						const l = document.createElement('span');
+						l.classList.add('level');
+						l.textContent = `${score.train_level[i]}回 Lv ${Math.min(5, (score.train_level[i] / 4 | 0) + 1)}`;
+						td.appendChild(l);
+
+						tr.appendChild(td);
+					});
+
+				const skill = document.createElement('td');
+				skill.textContent = score.status[5] + ' pt';
+				tr.appendChild(skill);
+
+				const point = document.createElement('td');
+				point.textContent = score.status[6];
+				const point_detail = document.createElement('span');
+				point_detail.classList.add('point_detail');
+				point_detail.textContent = `${Math.ceil(score.status[6] / -50)}回×50`;
+				point.appendChild(point_detail);
+				tr.appendChild(point);
+
+				const count = document.createElement('td');
+				count.textContent = score.train_count;
+				tr.appendChild(count);
+
+				return tr;
+			};
+			const getTarget = () => ({
+				speed: parseInt(document.querySelector('#speed').value),
+				stamina: parseInt(document.querySelector('#stamina').value),
+				power: parseInt(document.querySelector('#power').value),
+				guts: parseInt(document.querySelector('#guts').value),
+				smart: parseInt(document.querySelector('#smart').value),
+			});
+
+			document.querySelector('#calculate')
+				.addEventListener('click', () => {
+					const target = getTarget();
+					calculate(target)
+						.then(r => {
+							const score = r.sort((a, b) => a.train_count - b.train_count).shift();
+							console.log(score);
+							result.appendChild(createResult(target, score));
+						});
+				});
+
+			document.querySelector('#calculate').click();
 		}, { once: true });
 	</script>
+	<style>
+		#target label span::after {
+			content: "\0A";
+			white-space: pre;
+		}
+
+		#result td {
+			font-size: 150%;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		#result .target {
+			font-size: 80%;
+			font-weight: normal;
+		}
+
+		#result .level::before, #result .point_detail::before {
+			content: "\0A";
+			white-space: pre;
+		}
+
+		#result .level, #result .point_detail {
+			font-size: 80%;
+			font-weight: normal;
+		}
+	</style>
 </head>
 
 <body>
-	<p>動作テスト</p>
+	<table id="target">
+		<caption>Target</caption>
+		<thead>
+			<tr>
+				<th><label><span>Speed</span><input type="number" min="0" max="1000" id="speed" value="500" /></label></th>
+				<th><label><span>Stamina</span><input type="number" min="0" max="1000" id="stamina" value="300" /></label></th>
+				<th><label><span>Power</span><input type="number" min="0" max="1000" id="power" value="300" /></label></th>
+				<th><label><span>Guts</span><input type="number" min="0" max="1000" id="guts" value="100" /></label></th>
+				<th><label><span>Smart</span><input type="number" min="0" max="1000" id="smart" value="200" /></label></th>
+			</tr>
+		</thead>
+	</table>
+	<button id="calculate">Calculate</button>
+	<table id="result">
+		<caption>Result</caption>
+		<thead>
+			<tr>
+				<th>Speed</th>
+				<th>Stamina</th>
+				<th>Power</th>
+				<th>Guts</th>
+				<th>Smart</th>
+				<th>Skill</th>
+				<th>体力収支</th>
+				<th>Train</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
 
 </body>
 
