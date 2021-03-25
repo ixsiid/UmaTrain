@@ -16,31 +16,6 @@ export async function calculate({ speed, stamina, power, guts, smart }) {
 				train_score,
 			};
 
-			/* コピー先を参照してくれない
-			Object.defineProperties(result, {
-				speed: {
-					enumerable: true,
-					get: function () { return this.status[0]; }
-				},
-				stamina: {
-					enumerable: true,
-					get: function () { return this.status[1]; }
-				},
-				power: {
-					enumerable: true,
-					get: function () { return this.status[2]; }
-				},
-				guts: {
-					enumerable: true,
-					get: function () { return this.status[3]; }
-				},
-				smart: {
-					enumerable: true,
-					get: function () { return this.status[4]; }
-				},
-			});
-			*/
-
 			Object.defineProperty(result, 'train', {
 				enumerable: true,
 				value: function (name) {

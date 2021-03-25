@@ -11,20 +11,17 @@
 		var n;
 
 		window.addEventListener('load', async () => {
-			calculate({ speed: 1000, stamina: 50, power: 200, guts: 0, smart: 800 })
-				.then(r => console.log(r));
-
 			const result = document.querySelector('#result tbody');
 			const createResult = (target, score) => {
 				const tr = document.createElement('tr');
 				['speed', 'stamina', 'power', 'guts', 'smart']
 					.forEach((n, i) => {
 						const td = document.createElement('td');
-						td.textContent = score.status[i] + ' / ';
+						td.textContent = score.status[i];
 
 						const t = document.createElement('span');
 						t.classList.add('target');
-						t.textContent = target[n];
+						t.textContent = '/ ' + target[n];
 						td.appendChild(t);
 
 						const l = document.createElement('span');
@@ -71,14 +68,30 @@
 							result.appendChild(createResult(target, score));
 						});
 				});
-
-			document.querySelector('#calculate').click();
 		}, { once: true });
 	</script>
 	<style>
+		#target {
+			border-collapse: collapse;
+		}
+
+		#target td, #target th {
+			border: 1px solid black;
+			padding: 0.3em 1em;
+		}
+
 		#target label span::after {
 			content: "\0A";
 			white-space: pre;
+		}
+
+		#result {
+			border-collapse: collapse;
+		}
+		
+		#result td, #result th {
+			border: 1px solid black;
+			padding: 0.3em 1em;
 		}
 
 		#result td {
@@ -109,11 +122,11 @@
 		<caption>Target</caption>
 		<thead>
 			<tr>
-				<th><label><span>Speed</span><input type="number" min="0" max="1000" id="speed" value="500" /></label></th>
-				<th><label><span>Stamina</span><input type="number" min="0" max="1000" id="stamina" value="300" /></label></th>
-				<th><label><span>Power</span><input type="number" min="0" max="1000" id="power" value="300" /></label></th>
-				<th><label><span>Guts</span><input type="number" min="0" max="1000" id="guts" value="100" /></label></th>
-				<th><label><span>Smart</span><input type="number" min="0" max="1000" id="smart" value="200" /></label></th>
+				<th><label><span>Speed</span><input type="number" min="0" max="1000" id="speed" step="50" value="500" /></label></th>
+				<th><label><span>Stamina</span><input type="number" min="0" max="1000" id="stamina" step="50" value="300" /></label></th>
+				<th><label><span>Power</span><input type="number" min="0" max="1000" id="power" step="50" value="300" /></label></th>
+				<th><label><span>Guts</span><input type="number" min="0" max="1000" id="guts" step="50" value="100" /></label></th>
+				<th><label><span>Smart</span><input type="number" min="0" max="1000" id="smart" step="50" value="200" /></label></th>
 			</tr>
 		</thead>
 	</table>
