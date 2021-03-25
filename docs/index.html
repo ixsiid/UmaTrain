@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Undefined</title>
+	<script type="module" src="train.js"></script>
+	<script type="module">
+		import { calculate } from './train.js'
+
+
+		window.addEventListener('load', () => {
+			calculate();
+		}, { once: true });
+	</script>
+</head>
+
+<body>
+	<p>動作テスト</p>
+
+</body>
+
+</html>
