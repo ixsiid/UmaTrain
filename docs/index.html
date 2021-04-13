@@ -8,6 +8,7 @@
 	<script type="module" src="train.js"></script>
 	<script type="module">
 		import { calculate } from './train.js'
+		import { support_calculate } from './SupportCalc.js'
 
 		var n;
 
@@ -69,6 +70,14 @@
 							console.log(score);
 							result.appendChild(createResult(target, score));
 						});
+				});
+
+			const param_parser = form => Object.fromEntries(Array.from(form.elements).map(x => [x.name, x.value]));
+
+			document.querySelector('#support_calculate')
+				.addEventListener('click', () => {
+					const param = param_parser(document.querySelector('#support'));
+					console.log(param);
 				});
 		}, { once: true });
 	</script>
@@ -156,7 +165,39 @@
 		</thead>
 		<tbody></tbody>
 	</table>
-
+	
+	<form id="support">
+	
+	<table>
+		<caption>サポートカード効果計算</caption>
+		<thead>
+			<tr>
+				<th><label><span>種類</span><select name="kind"><option selected>スピード</option><option>スタミナ</option><option>パワー</option><option>根性</option><option>賢さ</option></select></label></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><th><label><span>友情ボーナス</span><input type="number" min="0" max="100" name="友情ボーナス" step="1" value="35" /></label></th></tr>
+			<tr><th><label><span>やる気効果アップ</span><input type="number" min="0" max="100" name="やる気効果アップ" step="1" value="20" /></label></th></tr>
+			<tr><th><label><span>初期絆ゲージアップ</span><input type="number" min="0" max="100" name="初期絆ゲージアップ" step="1" value="21" /></label></th></tr>
+			<tr><th><label><span>得意率アップ</span><input type="number" min="0" max="100" name="得意率アップ" step="1" value="35" /></label></th></tr>
+			<tr><th><label><span>トレーニング効果アップ</span><input type="number" min="0" max="100" name="トレーニング効果アップ" step="1" value="20" /></label></th></tr>
+			<tr><th><label><span>トレーニングボーナス</span><select name="トレーニングボーナス"><option selected>なし</option><option>スピード</option><option>スタミナ</option><option>パワー</option><option>根性</option><option>賢さ</option></select></label></th></tr>
+		</tbody>
+	</table>
+	<table>
+		<thead>
+			<tr>
+				<th>トレーニング回数</th>
+				<th><label><span>スピード</span><input type="number" min="0" max="100" name="スピード" step="1" value="20" /></label></th>
+				<th><label><span>スタミナ</span><input type="number" min="0" max="100" name="スタミナ" step="1" value="20" /></label></th>
+				<th><label><span>パワー</span><input type="number" min="0" max="100" name="パワー" step="1" value="20" /></label></th>
+				<th><label><span>根性</span><input type="number" min="0" max="100" name="根性" step="1" value="5" /></label></th>
+				<th><label><span>賢さ</span><input type="number" min="0" max="100" name="賢さ" step="1" value="5" /></label></th>
+			</tr>
+		</thead>
+	</table>
+	<button type="button" id="support_calculate">Calculate</button>
+	</form>
 </body>
 
 </html>
